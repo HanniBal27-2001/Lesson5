@@ -24,7 +24,12 @@ jobs:
 
       - name: Run built frontend for testing
         run: node dist/app.js
-
+        
+      - name: Upload frontend Build Artifact
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: frontend_artifact
+          path: dist
 
   backend: 
     name: Build and run backend
@@ -45,3 +50,29 @@ jobs:
 
       - name: Run built Backend for testing
         run: python dist/run.py
+        
+      - name: Upload backend Build Artifact
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: backend_artifact
+          path: dist
+          
+  bundle:
+    name: Bundle
+    runs-on: ubuntu-latest
+    needs: [frontend, backend]
+    
+    steps:
+      - run: mkdir -p dist
+      - name: Download frontend Build Artifact
+        uses: actions/download-artifact@v2.1.0
+        with:
+          name: frontend_artifact
+          path: dist/frontend
+          
+      - name: Download backend Build Artifact
+        uses: actions/download-artifact@v2.1.0
+        with:
+          name: backend_artifact
+          path: dist/backend
+  
