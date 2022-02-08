@@ -1,0 +1,15 @@
+name: Frontend
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  printAppJs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: printFile
+        run: |
+          echo Hello I'm a job
+          echo /src/frontend/app.js
